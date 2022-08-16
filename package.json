@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@aave/protocol-v2": "^1.0.1",
-    "@chainlink/contracts": "^0.3.1",
+    "@chainlink/contracts": "^0.4.2",
     "@ethersproject/bignumber": "^5.5.0",
     "@openzeppelin/contracts": "^4.7.3",
     "dotenv": "^14.2.0",
