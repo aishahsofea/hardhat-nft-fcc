@@ -8,7 +8,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = network.config.chainId;
 
-  if ((chainId = 31337)) {
+  if (chainId == 31337) {
     log("Local network detected. Deploying mocks...");
     await deploy("VRFCoordinatorV2Mock", {
       from: deployer,
