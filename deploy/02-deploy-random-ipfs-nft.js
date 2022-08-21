@@ -12,9 +12,9 @@ const {
 const FUND_AMOUNT = "1000000000000000000000";
 const imagesLocation = "./images/randomNft";
 let tokenUris = [
-  "ipfs://QmS7NJzGFVgGshAkWZUGRL11ZuEngwwasxzKnQ6XBCEVK7",
-  "ipfs://QmcaSdTzg9Di6X3Y4912nu6cuGTbnxhqJwNQeuRmbPwbxi",
-  "ipfs://QmeXm8uufPNDoY5b9s61GUkaTZfyDyPmJuYtdmvDpcmVTY",
+  "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo",
+  "ipfs://QmYQC5aGZu2PTH8XzbJrbDnvhj3gVs7ya33H9mqUNvST3d",
+  "ipfs://QmZYmH5iDbD6v3U2ixoVAjioSzvWJszDzYdbeCLquGSpVm",
 ];
 
 const metadataTemplate = {
@@ -92,7 +92,7 @@ async function handleTokenUris() {
     let tokenUriMetadata = { ...metadataTemplate };
     tokenUriMetadata.name = files[imageUploadResponseIndex].replace(".png", "");
     tokenUriMetadata.description = `An adorable ${tokenUriMetadata.name} pup!`;
-    tokenUriMetadata.image = `ipfs://${imageUploadResponses[imageUploadResponseIndex].IPFSHash}`;
+    tokenUriMetadata.image = `ipfs://${imageUploadResponses[imageUploadResponseIndex].IpfsHash}`;
     console.log(`Uploading ${tokenUriMetadata.name}...`);
     const metadataUploadResponse = await storeTokenUriMetadata(
       tokenUriMetadata
