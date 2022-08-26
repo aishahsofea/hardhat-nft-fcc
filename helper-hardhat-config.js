@@ -11,6 +11,7 @@ const networkConfig = {
     callbackGasLimit: "500000",
     interval: "30",
     mintFee: "100000000000000000",
+    ethUsdPriceFeed: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e",
   },
   31337: {
     name: "hardhat",
@@ -23,9 +24,13 @@ const networkConfig = {
   },
 };
 
+const DECIMALS = "18";
+const INITIAL_PRICE = "200000000000000000000";
 const developmentChains = ["hardhat", "localhost"];
 
 module.exports = {
   networkConfig,
   developmentChains,
+  DECIMALS,
+  INITIAL_PRICE,
 };
