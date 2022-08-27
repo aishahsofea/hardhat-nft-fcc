@@ -1,4 +1,4 @@
-const { network, ethers } = require("hardhat");
+const { network } = require("hardhat");
 const {
   networkConfig,
   developmentChains,
@@ -13,7 +13,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   let ethUsdPriceFeedAddress;
 
   if (chainId == 31337) {
-    // find ETH/USD price feed
+    // Find ETH/USD price feed
     const EthUsdAggregator = await deployments.get("MockV3Aggregator");
     ethUsdPriceFeedAddress = EthUsdAggregator.address;
   } else {
@@ -27,22 +27,22 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     encoding: "utf8",
   });
 
-  log("-------------------------------");
-  const args = [ethUsdPriceFeedAddress, lowSVG, highSVG];
+  log("----------------------------------------------------");
+  arguments = [ethUsdPriceFeedAddress, lowSVG, highSVG];
   const dynamicSvgNft = await deploy("DynamicSvgNft", {
     from: deployer,
-    args: args,
+    args: arguments,
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
 
-  // verify the deployment
+  // Verify the deployment
   if (
     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
   ) {
     log("Verifying...");
-    await verify(dynamicSvgNft.address, args);
+    await verify(dynamicSvgNft.address, arguments);
   }
 };
 

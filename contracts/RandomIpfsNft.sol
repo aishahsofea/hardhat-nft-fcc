@@ -122,7 +122,7 @@ contract RandomIpfsNft is VRFConsumerBaseV2, ERC721URIStorage, Ownable {
         require(success, "Transfer failed");
     }
 
-    function getMintfee() public view returns (uint256) {
+    function getMintFee() public view returns (uint256) {
         return i_mintFee;
     }
 

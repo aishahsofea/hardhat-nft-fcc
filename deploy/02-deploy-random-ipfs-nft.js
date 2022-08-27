@@ -1,4 +1,4 @@
-const { network, ethers } = require("hardhat");
+const { network } = require("hardhat");
 const {
   networkConfig,
   developmentChains,
@@ -6,11 +6,11 @@ const {
 const { verify } = require("../utils/verify");
 const {
   storeImages,
-  storeTokenUriMetadata,
+  storeTokeUriMetadata,
 } = require("../utils/uploadToPinata");
 
 const FUND_AMOUNT = "1000000000000000000000";
-const imagesLocation = "./images/randomNft";
+const imagesLocation = "./images/randomNft/";
 let tokenUris = [
   "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo",
   "ipfs://QmYQC5aGZu2PTH8XzbJrbDnvhj3gVs7ya33H9mqUNvST3d",
@@ -40,24 +40,24 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   }
 
   if (chainId == 31337) {
-    // create VRF2 subscription
+    // create VRFV2 Subscription
     const vrfCoordinatorV2Mock = await ethers.getContract(
       "VRFCoordinatorV2Mock"
     );
     vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address;
     const transactionResponse = await vrfCoordinatorV2Mock.createSubscription();
-    const transactionReceipt = await transactionResponse.wait(1);
+    const transactionReceipt = await transactionResponse.wait();
     subscriptionId = transactionReceipt.events[0].args.subId;
     // Fund the subscription
-    // Our mock makes it so that we dont have to worry about sending fund
+    // Our mock makes it so we don't actually have to worry about sending fund
     await vrfCoordinatorV2Mock.fundSubscription(subscriptionId, FUND_AMOUNT);
   } else {
     vrfCoordinatorV2Address = networkConfig[chainId].vrfCoordinatorV2;
     subscriptionId = networkConfig[chainId].subscriptionId;
   }
 
-  log("--------------------------------------------------------");
-  const arguments = [
+  log("----------------------------------------------------");
+  arguments = [
     vrfCoordinatorV2Address,
     subscriptionId,
     networkConfig[chainId]["gasLane"],
@@ -65,7 +65,6 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     networkConfig[chainId]["callbackGasLimit"],
     tokenUris,
   ];
-
   const randomIpfsNft = await deploy("RandomIpfsNft", {
     from: deployer,
     args: arguments,
@@ -84,7 +83,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 };
 
 async function handleTokenUris() {
-  const tokenUris = [];
+  tokenUris = [];
   const { responses: imageUploadResponses, files } = await storeImages(
     imagesLocation
   );
@@ -94,12 +93,9 @@ async function handleTokenUris() {
     tokenUriMetadata.description = `An adorable ${tokenUriMetadata.name} pup!`;
     tokenUriMetadata.image = `ipfs://${imageUploadResponses[imageUploadResponseIndex].IpfsHash}`;
     console.log(`Uploading ${tokenUriMetadata.name}...`);
-    const metadataUploadResponse = await storeTokenUriMetadata(
-      tokenUriMetadata
-    );
+    const metadataUploadResponse = await storeTokeUriMetadata(tokenUriMetadata);
     tokenUris.push(`ipfs://${metadataUploadResponse.IpfsHash}`);
   }
-
   console.log("Token URIs uploaded! They are:");
   console.log(tokenUris);
   return tokenUris;
